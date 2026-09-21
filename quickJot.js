@@ -14,7 +14,10 @@ function doPost(e) {
       throw new Error('Authentication error.');
     }
 
-    // 4. 後続処理（必要に応じてここに処理を記述します）
+    if (!receivedMsg || !s.trim()){
+      throw new Error('Message not defined.')
+    }
+
     main(receivedMsg);
 
     // 成功レスポンスの返却
@@ -35,6 +38,12 @@ function doPost(e) {
         status: 401,
         error: 'Authentication failed.',
         message: 'KEYが一致しないか、指定されていません'
+      };
+    }else if(error.message === 'Message not defined.'){
+      errorResponse = {
+        status: 400,
+        error: 'Message not defined.',
+        message: '記録するメッセージが指定されていません'
       };
     }else{
       errorResponse = {
